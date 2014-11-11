@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!--
+		Appenders for errors, messages and any developer debug statements
+	-->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%-4r [%t] [%d{MM-dd-yyyy HH:mm:ss}] [%-5p] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+		</filter>
+	</appender>
+
+	<appender name="logfile" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="@log.app.name@.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%-4r [%t] [%d{MM-dd-yyyy HH:mm:ss}] [%-5p] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="TRACE" />
+		</filter>
+	</appender>
+
+	<appender name="email" class="org.apache.log4j.net.SMTPAppender">
+		<param name="BufferSize" value="512" />
+		<param name="SMTPHost" value="@SMTP.host.address@"/>
+		<param name="From" value="@email.from.address@"/>
+		<param name="To" value="@email.to.address@"/>
+		<param name="Subject" value="@email.subject@"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{ISO8601}]%n%n%-5p%n%n%c%n%n%m%n%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+		</filter>
+	</appender>
+
+	<appender name="ASYNC_LOG" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="512" />
+		<appender-ref ref="console" />
+		<appender-ref ref="logfile" />
+		<appender-ref ref="email" />
+	</appender>
+
+	<!--  Appender for Performance logs -->
+	<appender name="performanceFile" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="@log.app.name@_Performance.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{MM-dd-yyyy,HH:mm:ss},%m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
+
+	<appender name="ASYNC_PEROFRMANCE_LOG" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="512" />
+		<appender-ref ref="performanceFile" />
+	</appender>	
+
+	<!--  Appender for BAPI Performance logs -->
+	<appender name="bapiPerformanceFile" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="@log.app.name@_BAPI_Performance.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%-4r [%t] [%d{MM-dd-yyyy HH:mm:ss}] [%-5p] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="DEBUG" />
+		</filter>
+	</appender>
+	
+	<appender name="ASYNC_BAPI_PEROFRMANCE_LOG" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="512" />
+		<appender-ref ref="bapiPerformanceFile" />
+	</appender>
+
+	<!--  Appender for BAPI Performance logs -->
+	<appender name="affiliatePerformanceFile" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="affiliates_Call_Performance.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%-4r [%t] [%d{MM-dd-yyyy HH:mm:ss}] [%-5p]  - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="DEBUG" />
+		</filter>
+	</appender>
+	
+	<appender name="ASYNC_AFFILIATE_PEROFRMANCE_LOG" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="512" />
+		<appender-ref ref="affiliatePerformanceFile" />
+	</appender>
+
+	<!-- Appender for Booking numbers -->
+	<appender name="bookingslog" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="abe_bookings.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{MM-dd-yyyy HH:mm:ss} %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="DEBUG" />
+		</filter>
+	</appender>
+
+	<!-- Generic loggers -->
+	<logger name="com.kcdata.abe" additivity="false">
+		<level value="OFF" />
+		<appender-ref ref="ASYNC_LOG" />
+	</logger>
+
+	<logger name="com.kcdataservices.partners" additivity="false">
+		<level value="OFF" />
+		<appender-ref ref="ASYNC_LOG" />
+	</logger>
+	
+	<!-- Loggers for Performance Tracing -->
+	<logger name="performance.log" additivity="false">
+		<level value="OFF" />
+		<appender-ref ref="ASYNC_PEROFRMANCE_LOG" />
+	</logger>
+
+	<!-- Loggers for BAPI Performance Tracing -->
+	<logger name="bapi.performance.log" additivity="false">
+		<level value="OFF" />
+		<appender-ref ref="ASYNC_BAPI_PEROFRMANCE_LOG" />
+	</logger>
+
+	<!-- Loggers for Affiliate Performance Tracing -->
+	<logger name="affiliate.performance.log" additivity="false">
+		<level value="OFF" />
+		<appender-ref ref="ASYNC_AFFILIATE_PEROFRMANCE_LOG" />
+	</logger>
+
+	<!-- Logger for Booking Logs -->
+	<logger name="bookings.log" additivity="false">
+		<level value="OFF" />
+		<appender-ref ref="bookingslog" />
+	</logger>
+
+	<root>
+		<priority value="ERROR" />
+		<appender-ref ref="console" />
+	</root>
+
+</log4j:configuration>

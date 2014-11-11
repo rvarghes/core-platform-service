@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flex="http://www.springframework.org/schema/flex"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/flex http://www.springframework.org/schema/flex/spring-flex-1.0.xsd">
+
+	<import resource="application-context.xml" />
+
+	<flex:message-broker>
+		<flex:exception-translator ref="exceptionTranslator" />
+	</flex:message-broker>
+
+	<flex:remoting-destination ref="retrieveVehicleClassCommandHandler" />
+	<flex:remoting-destination ref="retrieveFlightsCommandHandler" />
+	<flex:remoting-destination ref="retrieveGatewayDestinationsCommandHandler" />
+	<flex:remoting-destination ref="authenticateUserCommandHandler" channels="my-secure-amf"/>
+	<flex:remoting-destination ref="changePasswordCommandHandler" />
+	<flex:remoting-destination ref="advancedSkedSearchCommandHandler" />
+	<flex:remoting-destination ref="retrieveResortAreaCommandHandler" />
+	<flex:remoting-destination ref="retrieveAirlineInfoCommandHandler" />
+	<flex:remoting-destination ref="retrieveAmenitiesCommandHandler" />
+	<flex:remoting-destination ref="retrieveFlightInfoCommandHandler" />
+	<flex:remoting-destination ref="retrieveHotelsCommandHandler" />
+	<flex:remoting-destination ref="retrieveAlertsCommandHandler" />
+	<flex:remoting-destination ref="retrieveFareRulesCommandHandler" />
+	<flex:remoting-destination ref="retrieveAgencyInfoCommandHandler" />
+	<flex:remoting-destination ref="retrieveFairTradeContractCommandHandler" />
+	<flex:remoting-destination ref="priceItineraryCommandHandler" />
+	<flex:remoting-destination ref="bookItineraryCommandHandler" />
+	<flex:remoting-destination ref="bookingSearchCommandHandler" />
+	<flex:remoting-destination ref="breakdownChargesCommandHandler" />
+	<flex:remoting-destination ref="itinerarySearchCommandHandler" />
+	<flex:remoting-destination ref="retrieveVehiclesCommandHandler" />
+	<flex:remoting-destination ref="retrieveBookingCommandHandler" />
+	<flex:remoting-destination ref="resyncBookingCommandHandler" />
+	<flex:remoting-destination ref="retrieveInsuranceCommandHandler" />
+	<flex:remoting-destination ref="retrievePackagesCommandHandler" />
+	<flex:remoting-destination ref="retrieveServicesCommandHandler" />
+	<flex:remoting-destination ref="retrieveOpsAlertActionCodesCommandHandler" />
+	<flex:remoting-destination ref="opsAlertCommandHandler" />
+	<flex:remoting-destination ref="applyPaymentCommandHandler" channels="my-secure-amf"/>
+	<flex:remoting-destination ref="viewItineraryCommandHandler" />
+	<flex:remoting-destination ref="applyPaymentCheckCommandHandler" />
+	<flex:remoting-destination ref="retrieveMultiDestPackageCommandHandler" />
+	<flex:remoting-destination ref="retrieveServiceDetailsCommandHandler" />
+	<flex:remoting-destination ref="validatePromoCommandHandler" />
+	<flex:remoting-destination ref="bookingCommentsCommandHandler" />
+	<flex:remoting-destination ref="updateEdocsInfoCommandHandler" />
+	<flex:remoting-destination ref="saveItineraryCommandHandler" />
+	<flex:remoting-destination ref="saveItineraryChangeCommandHandler"/>
+	<flex:remoting-destination ref="retrieveItineraryCommandHandler" />
+	<flex:remoting-destination ref="emailItineraryCommandHandler" />
+	<flex:remoting-destination ref="printItineraryCommandHandler" />
+	<flex:remoting-destination ref="newsInfoCommandHandler" />
+	<flex:remoting-destination ref="bookingLockCommandHandler" />
+	<flex:remoting-destination ref="paymentHistoryCommandHandler" />
+	<flex:remoting-destination ref="emailCommandHandler" />
+	<flex:remoting-destination ref="retrieveAllPricesCommandHandler"/>
+	<flex:remoting-destination ref="extendoptiondatecommandhandler" />	
+	<flex:remoting-destination ref="retrieveHotelChainCommandHandler" />
+	<flex:remoting-destination ref="retrieveCharterDatesCommandHandler" />
+	<flex:remoting-destination ref="retrieveSpecialsCommandHandler"/>
+	<flex:remoting-destination ref="retrieveAgenciesSearchCommandHandler"/>
+	<flex:remoting-destination ref="retrieveHotelsVendorCommandHandler" />
+	<flex:remoting-destination ref="hotelRateRulesCommandHandler" />
+	<!--New Handler added Below for issue 3620543 -->
+	<flex:remoting-destination ref="retrieveCharterGatewayDestinationsCommandHandler" />
+	<flex:remoting-destination ref="priceChangeBookingCommandHandler" /> 
+		<bean id="exceptionTranslator"
+		class="com.kcdata.abe.presentation.interceptor.ABEExceptionTranslator"
+		parent="abeInterceptorBase" />
+</beans>
