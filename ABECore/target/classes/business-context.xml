@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+		<!-- Data Source definition  for HBSI -->
+	<!--bean id="abeHotelDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="jdbc/hbsi" />
+	</bean-->
+	<bean id="abeHotelDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" lazy-init="true">
+		<property name="poolPreparedStatements" value="true" />
+		<property name="url"
+			value="jdbc:db2://AVPHUX88:60000/WEBQ02:driverType=4;currentSchema=AVBEQ02;" />
+		<property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+		<property name="username" value="avbeq02" />
+		<property name="password" value="week+port2" />
+	</bean>
+	
+	<bean id="vehicleClassService" class="com.kcdata.abe.business.service.VehicleClassServiceImpl"
+		parent="abeServiceBase">
+		<property name="vehicleClassDao" ref="vehicleClassDao" />
+	</bean>
+	<bean id="flightsService" class="com.kcdata.abe.business.service.FlightsServiceImpl"
+		parent="abeServiceBase">
+		<property name="charterFlightsDao" ref="charterFlightsDao" />
+		<property name="flightsDao" ref="flightsDao" />
+		<property name="availabilityDaoFactory" ref="availabilityDaoFactory" /> 
+		<property name="taskExecutor" ref="taskExecutor" />
+		<property name="flightInfoDao" ref="flightInfoDao" />
+		<property name="gatewayDestinationsDao" ref="gatewayDestinationsDao"/>
+		<property name="charterGatewayDestinationsDao" ref="charterGatewayDestinationsDao"/>
+		<property name="pricingThreadService" ref="pricingThreadService"/>
+	</bean>	
+	
+	<bean id="abeSmAvailService" class="com.kcdata.abe.business.service.AbeSmAvailServiceImpl">
+		<property name="smAvailService" ref="smAvailService" />
+	</bean>
+	
+	<bean id="seatBookModifyCancelService" class="com.kcdata.abe.business.service.SeatBookModifyCancelServiceImpl">
+		<property name="smAvailService" ref="smAvailService" />
+		<property name="smBookCancService" ref="smBookCancService" />
+	</bean>
+	
+	<bean id="specialsService" class="com.kcdata.abe.business.service.SpecialsCacheDataServiceImpl"
+		parent="abeServiceBase">
+		<property name="specialsCacheDao" ref="specialsCacheDao" />
+	</bean>
+	<bean id="gatewayDestinationsService"
+		class="com.kcdata.abe.business.service.GatewayDestinationsServiceImpl"
+		parent="abeServiceBase">
+		<property name="gatewayDestinationsDao" ref="gatewayDestinationsDao" />
+	</bean>
+	<bean id="userService" class="com.kcdata.abe.business.service.UserServiceImpl"
+		parent="abeServiceBase">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	<bean id="resortAreaService" class="com.kcdata.abe.business.service.ResortAreaServiceImpl"
+		parent="abeServiceBase">
+		<property name="resortAreaDao" ref="resortAreaDao" />
+	</bean>
+	<bean id="hotelChainService" class="com.kcdata.abe.business.service.HotelChainServiceImpl"
+		parent="abeServiceBase">
+		<property name="hotelChainDao" ref="hotelChainDao" />
+		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+	</bean>
+	<bean id="advancedSkedSearchService"
+		class="com.kcdata.abe.business.service.AdvancedSkedSearchServiceImpl"
+		parent="abeServiceBase">
+		<property name="advancedSkedSearchDao" ref="advancedSkedSearchDao" />
+	</bean>
+	<bean id="airlineInfoService" class="com.kcdata.abe.business.service.AirlineInfoServiceImpl"
+		parent="abeServiceBase">
+		<property name="airlineInfoDao" ref="airlineInfoDao" />
+	</bean>
+	<bean id="amenitiesService" class="com.kcdata.abe.business.service.AmenitiesServiceImpl"
+		parent="abeServiceBase">
+		<property name="amenitiesDao" ref="amenitiesDao" />
+	</bean>
+	<bean id="hotelsService" class="com.kcdata.abe.business.service.HotelsServiceImpl"
+		parent="abeServiceBase">
+		<property name="hotelsDao" ref="hotelsDao" />
+		<property name="wesbHotelDao" ref="wesbHotelDao" />
+		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+	</bean>
+	<bean id="alertsService" class="com.kcdata.abe.business.service.AlertsServiceImpl"
+		parent="abeServiceBase">
+		<property name="alertsDao" ref="alertsDao" />
+	</bean>
+	<bean id="fareRulesService" class="com.kcdata.abe.business.service.FareRulesServiceImpl"
+		parent="abeServiceBase">
+		<property name="fareRulesDao" ref="fareRulesDao" />
+		<property name="hotelRateRulesDao" ref="hotelRateRulesDao" />
+	</bean>
+	<bean id="agencyInfoService" class="com.kcdata.abe.business.service.AgencyInfoServiceImpl"
+		parent="abeServiceBase">
+		<property name="agencyInfoDao" ref="agencyInfoDao" />
+	</bean>
+	<bean id="fairTradeContractService"
+		class="com.kcdata.abe.business.service.FairTradeContractServiceImpl"
+		parent="abeServiceBase">
+		<property name="fairTradeContractDao" ref="fairTradeContractDao" />
+	</bean>
+	
+	<bean id="itineraryPricingService"
+		class="com.kcdata.abe.business.service.ItineraryPricingServiceImpl"
+		parent="abeServiceBase">
+		<property name="itineraryPricingDao" ref="itineraryPricingDao" />
+		<property name="wesbItineraryPricingDao" ref="wesbItineraryPricingDao" />
+		<property name="hotelsDao" ref="hotelsDao" />
+		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+		<property name="hbsiHotelsOnly" ref="hbsiHotelsOnly" />
+		<property name="bookingSearchDao" ref="bookingSearchDao" />
+	</bean>
+	<bean id="itineraryService"
+		class="com.kcdata.abe.business.service.ItineraryServiceImpl"
+		parent="abeServiceBase">
+		<property name="itineraryDao" ref="itineraryDao" />
+		<property name="itineraryXMLDao" ref="itineraryXMLDao" />
+		<property name="paymentHistoryDao" ref="paymentHistoryDao" />
+		<property name="alertsDao" ref="alertsDao"/>
+		<property name="commentsDao" ref="commentsDao"/>
+		<property name="itineraryComparisonEmailDao" ref="itineraryComparisonEmailDao"/>
+		<property name="tokenProcessNo" ref="tokenProcessNo" /> 
+		<property name="bookingSearchDao" ref="bookingSearchDao" />
+		<property name="itinerarySearchDao" ref="itinerarySearchDao" />
+		<property name="hotelsDao" ref="hotelsDao" />
+		<property name="itineraryPricingDao" ref="itineraryPricingDao" />
+		<property name="wesbBookingDao" ref="wesbBookingDao"/>	
+		<property name="itineraryWESBDao" ref="itineraryWESBDao" />
+		<property name="hbsiHotelDao" ref="hbsiHotelDao" />	
+		<property name="seatBookModifyCancelService" ref="seatBookModifyCancelService" />
+		<property name="hbsiHotelsOnly" ref="hbsiHotelsOnly" />
+	</bean>
+	<bean id="bookingSearchService"
+		class="com.kcdata.abe.business.service.BookingSearchServiceImpl"
+		parent="abeServiceBase">
+		<property name="bookingSearchDao" ref="bookingSearchDao" />
+		<property name="hotelsDao" ref="hotelsDao" />
+		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+	</bean>
+	<bean id="breakDownChargesService"
+		class="com.kcdata.abe.business.service.BreakdownChargesServiceImpl"
+		parent="abeServiceBase">
+		<property name="breakdownChargesDao" ref="breakdownChargesDao"/>
+	</bean>
+	<bean id="itinerarySearchService"
+		class="com.kcdata.abe.business.service.ItinerarySearchServiceImpl"
+		parent="abeServiceBase">
+		<property name="itinerarySearchDao" ref="itinerarySearchDao" />
+		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+		<property name="hbsiHotelsOnly" ref="hbsiHotelsOnly" />
+		
+	</bean>
+	<bean id="vehiclesService" class="com.kcdata.abe.business.service.VehiclesServiceImpl"
+		parent="abeServiceBase">
+		<property name="vehiclesDao" ref="vehiclesDao" />
+	</bean>
+	<bean id="insuranceService" class="com.kcdata.abe.business.service.InsuranceServiceImpl"
+		parent="abeServiceBase">
+		<property name="insuranceDao" ref="insuranceDao" />
+		<property name="insuranceWESBDao" ref="insuranceWESBDao" />
+		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+	</bean>
+	<bean id="servicesService" class="com.kcdata.abe.business.service.ServicesServiceImpl"
+		parent="abeServiceBase">
+		<property name="servicesDao" ref="servicesDao" />
+		<property name="wesbServicesDao" ref="wesbServicesDao"/>
+		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+	</bean>
+	<bean id="packagesService" class="com.kcdata.abe.business.service.PackagesServiceImpl"
+		parent="abeServiceBase">
+		<property name="availabilityDaoFactory" ref="availabilityDaoFactory" />
+		<property name="taskExecutor" ref="taskExecutor" />
+		<property name="packagesDAO" ref="packagesDao" />
+		<property name="wesbPackagesDAO" ref="wesbPackagesDao" />
+		<property name="gatewayDestinationsDao" ref="gatewayDestinationsDao"/>
+		<property name="specialsCacheDao" ref="specialsCacheDao" />
+		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+		<property name="charterGatewayDestinationsDao" ref="charterGatewayDestinationsDao"/>
+		<property name="pricingThreadService" ref="pricingThreadService"/>
+		<property name="charterFlightsDao" ref="charterFlightsDao" />
+	</bean>
+	<bean id="opsAlertService"
+		class="com.kcdata.abe.business.service.OpsAlertServiceImpl"
+		parent="abeServiceBase">
+		<property name="opsAlertActionCodesDao" ref="opsAlertActionCodesDao" />
+		<property name="createOpsAlertDao" ref="createOpsAlertDao" />
+	</bean>
+	<bean id="applyPaymentService" class="com.kcdata.abe.business.service.ApplyPaymentServiceImpl"
+		parent="abeServiceBase">
+		<property name="applyPaymentDao" ref="applyPaymentDao" />
+	</bean>
+	<bean id="multiDestinationPackageService"
+		class="com.kcdata.abe.business.service.MultiDestinationPackageServiceImpl"
+		parent="abeServiceBase">
+		<property name="availabilityDaoFactory" ref="availabilityDaoFactory" />
+		<property name="taskExecutor" ref="taskExecutor" />
+		<!-- CQ7968- stop over changes-->
+		<property name="stopoverFlag" value="${multidest.service.stopover.flag}" />
+		<property name="islandCityPair">
+  			<list>
+    			<value>HNL</value>
+    			<value>OGG</value>
+    			<value>LIH</value>
+    			<value>ITO</value>
+    			<value>KOA</value>
+    			<value>LNY</value>
+    			<value>MKK</value>
+    			<value>JHM</value>
+  			</list>
+  		</property>
+  		<!--End-->
+  		<property name="wesbMultiDestpackageDao" ref="wesbMultiDestpackageDao"/>
+  		<property name="hbsiHotelDao" ref="hbsiHotelDao"/>
+	</bean>
+	<bean id="promoService" class="com.kcdata.abe.business.service.PromoServiceImpl"
+		parent="abeServiceBase">
+		<property name="promoDao" ref="promoDao" />
+	</bean>
+	<bean id="commentsService" class="com.kcdata.abe.business.service.CommentsServiceImpl"
+		parent="abeServiceBase">
+		<property name="commetsDao" ref="commentsDao" />
+	</bean>
+	<bean id="edocsInfoService" class="com.kcdata.abe.business.service.EdocsInfoServiceImpl"
+		parent="abeServiceBase">
+		<property name="edocsInfoDao" ref="edocsInfoDao" />
+	</bean>
+	<bean id="newsInfoService" class="com.kcdata.abe.business.service.NewsInfoServiceImpl"
+		parent="abeServiceBase">
+		<property name="newsInfoDao" ref="newsInfoDao" />
+	</bean>
+	<bean id="bookingLockService" class="com.kcdata.abe.business.service.BookingLockServiceImpl"
+		parent="abeServiceBase">
+		<property name="bookingLockDao" ref="bookingLockDao"/>
+	</bean>
+	<bean id="paymentHistoryService" class="com.kcdata.abe.business.service.PaymentHistoryServiceImpl"
+		parent="abeServiceBase">
+		<property name="paymentHistoryDao" ref="paymentHistoryDao"/>
+	</bean>		
+	<bean id="emailService"
+		class="com.kcdata.abe.business.service.EmailServiceImpl"
+		parent="abeServiceBase">
+		<property name="emailInfoDao" ref="emailInfoDao" />
+	</bean>
+	<bean id="agenciesSearchService" class="com.kcdata.abe.business.service.AgenciesSearchServiceImpl"
+		parent="abeServiceBase">
+		<property name="agenciesSearchDao" ref="agenciesSearchDao" />
+	</bean>
+	<bean id="edocsService" class="com.kcdata.abe.business.service.EdocsServiceImpl"
+		parent="abeServiceBase">
+		<property name="edocsInfoDao" ref="edocsInfoDao" />
+	</bean>
+	
+	<bean id="proxyService" class="com.kcdata.abe.business.service.WesbProxyService">
+		<constructor-arg index="0" type="java.lang.String" value="${wesbHotelURL}"/>
+        <constructor-arg index="1" type="java.lang.String" value="${wesbHotelQName}"/>
+        <constructor-arg index="2" type="java.lang.String" value="${wesbPackageURL}"/>
+        <constructor-arg index="3" type="java.lang.String" value="${wesbPackageQName}"/>
+	</bean>
+	<bean id="hbsiHotelService" class="com.kcdata.abe.business.service.HBSiHotelServiceImpl">
+		<property name="hbsiHotelDao" ref="hbsiHotelDao" />
+	</bean>
+	
+	<bean id="hotelConvertUtils" class="com.kcdata.abe.data.util.HotelConvertUtils" init-method="init">
+		<property name="hbsiHotelDao" ref="hbsiHotelDao" />
+	</bean>
+	<bean id="expireBookingService" class="com.kcdata.abe.business.service.ExpireBookingServiceImpl"
+		parent="abeServiceBase">
+		<property name="expireBookingDao" ref="expireBookingDao" />
+		<property name="smBookCancDao" ref="smBookCancDao" />
+	</bean>
+	<!--New Service Added Below for issue 3620543-->
+	<bean id="charterGatewayDestinationsService" class="com.kcdata.abe.business.service.CharterGatewayDestinationsServiceImpl"
+		parent="abeServiceBase">
+		<property name="charterGatewayDestinationsDao" ref="charterGatewayDestinationsDao" />
+	</bean>
+	<bean id="pricingThreadService" class="com.kcdata.abe.business.service.PricingThreadServiceImpl"
+		parent="abeServiceBase">
+		<property name="pricingDaoFactory" ref="pricingDaoFactory" />
+		<property name="taskExecutor" ref="taskExecutor" />
+		<property name="bookingSearchService" ref="bookingSearchService" />
+	</bean>
+</beans>

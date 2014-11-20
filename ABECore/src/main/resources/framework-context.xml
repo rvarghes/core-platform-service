@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd		
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Application context factory -->
+	<bean id="abeApplicationContextFactory"
+		class="com.kcdata.abe.framework.context.ABEApplicationContextFactoryImpl" />
+
+	<bean id="abeApplicationContextAware" abstract="true">
+		<property name="applicationContextFactory" ref="abeApplicationContextFactory" />
+	</bean>
+
+	<!-- Application layer base classes -->
+	<bean id="abeCommandHandler"
+		class="com.kcdata.abe.framework.command.handler.ABECommandHandler"
+		parent="abeApplicationContextAware" abstract="true" />
+
+	<bean id="abeCommandHandlerBase"
+		class="com.kcdata.abe.framework.command.handler.ABECommandHandlerBase"
+		parent="abeCommandHandler" abstract="true" />
+
+	<!-- Business layer base classes -->
+	<bean id="abeService" class="com.kcdata.abe.framework.service.ABEService"
+		parent="abeApplicationContextAware" abstract="true" />
+
+	<bean id="abeServiceBase" class="com.kcdata.abe.framework.service.ABEServiceBase"
+		parent="abeService" abstract="true" />
+
+	<!-- Data layer base classes -->
+	<bean id="abeDao" class="com.kcdata.abe.framework.dao.ABEDao"
+		parent="abeApplicationContextAware" abstract="true" />
+
+	<bean id="abeDaoBase" class="com.kcdata.abe.framework.dao.ABEDaoBase"
+		abstract="true" parent="abeDao" />
+
+	<bean id="abeDBDaoBase" class="com.kcdata.abe.framework.dao.ABEDBDaoBase"
+		abstract="true" parent="abeDao">
+		<property name="dataSource" ref="abeDataSource" />
+	</bean>
+
+	<!-- Interceptor  base classes -->
+	<bean id="abeInterceptor" class="com.kcdata.abe.framework.aop.interceptor.ABEInterceptor"
+		parent="abeApplicationContextAware" abstract="true" />
+
+	<bean id="abeInterceptorBase"
+		class="com.kcdata.abe.framework.aop.interceptor.ABEInterceptorBase"
+		parent="abeInterceptor" abstract="true" />
+
+
+	<!-- SAP connectivity base class -->
+	<bean id="abeSAPDaoBase" class="com.kcdata.abe.framework.dao.ABESAPDaoBase"
+		abstract="true" parent="abeDaoBase">
+		<property name="bapiExecutionManager" ref="bapiExecutionManager" />
+	</bean>
+
+	<!-- Load all the application properties -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config/SAPLogon.properties
+				</value>
+				<value>classpath:config/config.properties
+				</value>
+				<value>classpath:config/webservice.properties</value>
+				<!--<value>file:C:/RADWorkSpace/webservice.properties</value>-->
+			</list>
+		</property>
+	</bean>
+	
+	
+	<!-- Configure SAP Logon properties -->
+	<bean id="sapLogonProperties" class="com.kcdata.abe.framework.sap.SAPLogonProperties">
+		<property name="poolName" value="${jco.pool.name}" />
+		<property name="ashost" value="${jco.pool.ashost}" />
+		<property name="client" value="${jco.pool.client}" />
+		<property name="group" value="${jco.pool.group}" />
+		<property name="gwhost" value="${jco.pool.gwhost}" />
+		<property name="gwserv" value="${jco.pool.gwserv}" />
+		<property name="lang" value="${jco.pool.lang}" />
+		<property name="loadBalanced" value="${jco.pool.loadBalanced}" />
+		<property name="maxConnections" value="${jco.pool.maxConnections}" />
+		<property name="mshost" value="${jco.pool.mshost}" />
+		<property name="passwd" value="${jco.pool.passwd}" />
+		<property name="r3Name" value="${jco.pool.r3Name}" />
+		<property name="sysnr" value="${jco.pool.sysnr}" />
+		<property name="user" value="${jco.pool.user}" />
+		<property name="debugMode" value="${jco.pool.debugMode}" />
+		<property name="maxWaitTime" value="${jco.pool.maxWaitTime}" />
+		<property name="connectionTimeout" value="${jco.pool.connectionTimeout}" />
+		<property name="timeoutCheckPeriod" value="${jco.pool.timeoutCheckPeriod}" />
+	</bean>
+
+	<!-- Message source properties -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages/errors</value>
+				<value>messages/warnings</value>
+				<value>messages/messages</value>
+				
+			</list>
+		</property>
+	</bean>
+
+	<!--  SAP Connection Factory -->
+	<bean id="sapClientFactory" class="com.kcdata.abe.framework.sap.SAPClientFactoryImpl">
+		<property name="sapLogonProperties" ref="sapLogonProperties" />
+	</bean>
+
+	<!--  SAP BAPI execution manager -->
+	<bean id="bapiExecutionManager" class="com.kcdata.abe.framework.sap.BAPIExecutionManagerImpl">
+		<property name="sapClientFactory" ref="sapClientFactory" />
+	</bean>
+
+</beans>

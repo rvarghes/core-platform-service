@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="admSecUserMstService" class="com.kcdata.sms.business.service.AdmSecUserMstServiceImpl">
+		<property name="admSecUserMstDao" ref="admSecUserMstDao" />
+	</bean>
+	<bean id="admSecUserMstDao" class="com.kcdata.sms.data.dao.AdmSecUserMstDaoImpl">		
+	</bean>
+	<bean id="pricingMasterService" class="com.kcdata.sms.business.service.PricingMasterServiceImpl">
+		<property name="pricingMasterDao" ref="pricingMasterDao" />
+	</bean>
+	<bean id="pricingMasterDao" class="com.kcdata.sms.data.dao.PricingMasterDaoImpl">		
+	</bean>
+
+	<bean id="contractMasterService" class="com.kcdata.sms.business.service.ContractMasterServiceImpl">
+		<property name="contractMasterDao" ref="contractMasterDao" />
+	</bean>
+	<bean id="contractMasterDao" class="com.kcdata.sms.data.dao.ContractMasterDaoImpl">		
+	</bean>
+
+	<bean id="admSecRoleMstService" class="com.kcdata.sms.business.service.AdmSecRoleMstServiceImpl">
+		<property name="admSecRoleMstDao" ref="admSecRoleMstDao" />
+	</bean>
+	<bean id="admSecRoleMstDao" class="com.kcdata.sms.data.dao.AdmSecRoleMstDaoImpl">		
+	</bean>
+	
+	<bean id="carrierMasterService" class="com.kcdata.sms.business.service.CarrierMasterServiceImpl">		
+	 	<property name="carrierMasterDao" ref="carrierMasterDao" />
+	</bean>
+	<bean id="carrierMasterDao" class="com.kcdata.sms.data.dao.CarrierMasterDaoImpl">
+	</bean>
+	<bean id="codeMasterService" class="com.kcdata.sms.business.service.CodeMasterServiceImpl">		
+	 	<property name="codeMasterDao" ref="codeMasterDao" />
+	</bean>
+	<bean id="codeMasterDao" class="com.kcdata.sms.data.dao.CodeMasterDaoImpl">
+	</bean>
+	<bean id="aircraftMasterService" class="com.kcdata.sms.business.service.AircraftMasterServiceImpl">		
+	 	<property name="aircraftMasterDao" ref="aircraftMasterDao" />
+	</bean>
+	<bean id="aircraftMasterDao" class="com.kcdata.sms.data.dao.AircraftMasterDaoImpl">
+	</bean>
+	<bean id="smAvailService" class="com.kcdata.sms.business.service.SMAvailServiceImpl">
+		<property name="smAvailDao" ref="smAvailDao" />
+		<property name="aircraftMasterService" ref="aircraftMasterService" />
+		<property name="codeMasterService" ref="codeMasterService" />
+	</bean>
+	<bean id="smAvailDao" class="com.kcdata.sms.data.dao.SMAvailDaoImpl">
+	</bean>
+	
+	<bean id="admSecRoleScreenMappingService" class="com.kcdata.sms.business.service.AdmSecRoleScreenMappingServiceImpl">		
+	 	<property name="admSecRoleScreenMappingDao" ref="admSecRoleScreenMappingDao" />
+	</bean>
+	<bean id="admSecRoleScreenMappingDao" class="com.kcdata.sms.data.dao.AdmSecRoleScreenMappingDaoImpl">
+	</bean>
+	<bean id="availabilityMasterService" class="com.kcdata.sms.business.service.AvailabilityMasterServiceImpl">
+		<property name="availabilityMasterDao" ref="availabilityMasterDao" />
+	</bean>
+	<bean id="availabilityMasterDao" class="com.kcdata.sms.data.dao.AvailabilityMasterDaoImpl">		
+	</bean>
+	<bean id="smBookCancService" class="com.kcdata.sms.business.service.SMBookCancServiceImpl">
+		<property name="smBookCancDao" ref="smBookCancDao" />
+		<property name="smAvailService" ref="smAvailService" />
+	</bean>
+	<bean id="smBookCancDao" class="com.kcdata.sms.data.dao.SMBookCancDaoImpl">
+	</bean>
+	<bean id="airportMasterService" class="com.kcdata.sms.business.service.AirportMasterServiceImpl">
+		<property name="airportMasterDao" ref="airportMasterDao" />
+	</bean>
+	<bean id="airportMasterDao" class="com.kcdata.sms.data.dao.AirportMasterDaoImpl">		
+	</bean>
+	<bean id="migrationMasterService" class="com.kcdata.sms.business.service.MigrationMasterServiceImpl">
+		<property name="migrationMasterDao" ref="migrationMasterDao" />
+		<property name="smAvailDao" ref="smAvailDao" />
+	</bean>
+	<bean id="migrationMasterDao" class="com.kcdata.sms.data.dao.MigrationMasterDaoImpl">	
+	</bean>	
+</beans>

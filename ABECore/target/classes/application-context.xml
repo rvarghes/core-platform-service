@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<import resource="classpath*:sms-context.xml" />
+	<import resource="classpath*:business-context.xml" />
+	<import resource="classpath*:data-context.xml" />
+	<import resource="classpath*:framework-context.xml" />
+	<import resource="classpath*:aop-context.xml" />
+	<import resource="classpath*:infrastructure-context.xml" />	
+
+
+	<bean id="retrieveVehicleClassCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveVehicleClassCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="vehicleClassService" ref="vehicleClassService" />
+	</bean>
+
+	<bean id="retrieveFlightsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveFlightsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="flightsService" ref="flightsService" />
+		<property name="abeSmAvailService" ref="abeSmAvailService" />
+		<property name="daysAhead" value="${charter.flights.days.ahead}" />
+		<property name="daysBehind" value="${charter.flights.days.behind}" />
+		<property name="gatewayDestinationsService" ref="gatewayDestinationsService" />
+	</bean>
+
+	<bean id="seatmapViewCommandHandler"
+		class="com.kcdata.abe.application.command.handler.SeatmapViewCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="seatmapAvailService" ref="smAvailService" />
+	</bean>
+
+	<bean id="retrieveGatewayDestinationsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveGatewayDestinationsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="gatewayDestinationsService" ref="gatewayDestinationsService" />
+	</bean>
+	<bean id="authenticateUserCommandHandler"
+		class="com.kcdata.abe.application.command.handler.AuthenticateUserCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean id="changePasswordCommandHandler"
+		class="com.kcdata.abe.application.command.handler.ChangePasswordCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean id="advancedSkedSearchCommandHandler"
+		class="com.kcdata.abe.application.command.handler.AdvancedSkedSearchCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="advancedSkedSearchService" ref="advancedSkedSearchService" />
+	</bean>
+	<bean id="retrieveResortAreaCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveResortAreaCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="resortAreaService" ref="resortAreaService" />
+	</bean>
+	<bean id="retrieveHotelChainCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveHotelChainCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="hotelChainService" ref="hotelChainService" />
+	</bean>
+	<bean id="retrieveAirlineInfoCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveAirlineInfoCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="airlineInfoService" ref="airlineInfoService" />
+	</bean>
+	<bean id="retrieveAmenitiesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveAmenitiesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="amenitiesService" ref="amenitiesService" />
+	</bean>
+	<bean id="retrieveFlightInfoCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveFlightInfoCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="flightsService" ref="flightsService" />
+	</bean>
+	<bean id="retrieveHotelsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveHotelsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="hotelsService" ref="hotelsService" />
+	</bean>
+	<bean id="retrieveAlertsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveAlertsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="alertsService" ref="alertsService" />
+	</bean>
+	<bean id="retrieveFareRulesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveFareRulesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="fareRulesService" ref="fareRulesService" />
+	</bean>
+	<bean id="hotelRateRulesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.HotelRateRulesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="rateRulesService" ref="fareRulesService" />
+	</bean>	
+	<bean id="retrieveAgencyInfoCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveAgencyInfoCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="agencyInfoService" ref="agencyInfoService" />
+	</bean>
+	<bean id="retrieveFairTradeContractCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveFairTradeContractCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="fairTradeContractService" ref="fairTradeContractService" />
+	</bean>
+	<bean id="priceItineraryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.PriceItineraryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryPricingService" ref="itineraryPricingService" />
+		<property name="gatewayDestinationsService" ref="gatewayDestinationsService" />
+	</bean>
+	<bean id="bookItineraryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.BookItineraryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+		<property name="commentsService" ref="commentsService" />
+		<property name="gatewayDestinationsService" ref="gatewayDestinationsService" />
+		<property name="servicesService" ref="servicesService" />
+	</bean>
+	<bean id="saveItineraryChangeCommandHandler"
+		class="com.kcdata.abe.application.command.handler.SaveItineraryChangeCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+		<property name="commentsService" ref="commentsService" />
+		<property name="gatewayDestinationsService" ref="gatewayDestinationsService" />
+		<property name="bookingSearchService" ref="bookingSearchService" />
+		<property name="servicesService" ref="servicesService" />
+	</bean>
+	<bean id="saveItineraryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.SaveItineraryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+	</bean>
+	<bean id="bookingSearchCommandHandler"
+		class="com.kcdata.abe.application.command.handler.BookingSearchCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="bookingSearchService" ref="bookingSearchService" />
+	</bean>
+	<bean id="breakdownChargesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.BreakdownChargesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="breakdownChargesService" ref="breakDownChargesService"/>
+		<property name="xmlConverter" ref="xmlConverUtils" />
+	</bean>
+	<bean id="retrieveItineraryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveItineraryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itinerarySearchService" ref="itinerarySearchService" />
+	</bean>
+	<bean id="emailItineraryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.EmailItineraryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+		<property name="agencyInfoService" ref="agencyInfoService" />		
+	</bean>
+	<bean id="printItineraryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.PrintItineraryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+	</bean>
+	<bean id="itinerarySearchCommandHandler"
+		class="com.kcdata.abe.application.command.handler.ItinerarySearchCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itinerarySearchService" ref="itinerarySearchService" />
+	</bean>
+	<bean id="retrieveVehiclesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveVehiclesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="vehiclesService" ref="vehiclesService" />
+	</bean>
+	<bean id="retrieveBookingCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveBookingCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="bookingSearchService" ref="bookingSearchService" />
+		<property name="gatewayDestinationsService" ref="gatewayDestinationsService" />
+		<property name="abeSmAvailService" ref="abeSmAvailService" />
+	</bean>
+	<bean id="resyncBookingCommandHandler"
+		class="com.kcdata.abe.application.command.handler.ResyncBookingCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="bookingSearchService" ref="bookingSearchService" />
+	</bean>
+	<bean id="retrieveInsuranceCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveInsuranceCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="insuranceService" ref="insuranceService" />
+	</bean>
+	<bean id="retrieveServicesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveServicesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="servicesService" ref="servicesService" />
+	</bean>
+	<bean id="retrievePackagesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrievePackagesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="packagesService" ref="packagesService" />
+		<property name="abeSmAvailService" ref="abeSmAvailService" />
+		<property name="daysAhead" value="${charter.flights.days.ahead}" />
+		<property name="daysBehind" value="${charter.flights.days.behind}" />
+		<property name="gatewayDestinationsDao" ref="gatewayDestinationsDao"/>
+		<property name="gatewayDestinationsService" ref="gatewayDestinationsService" />
+	</bean>
+	<bean id="retrieveOpsAlertActionCodesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveOpsAlertActionCodesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="opsAlertService" ref="opsAlertService" />
+	</bean>
+	<bean id="opsAlertCommandHandler"
+		class="com.kcdata.abe.application.command.handler.OpsAlertCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="opsAlertService" ref="opsAlertService" />
+	</bean>
+	<bean id="applyPaymentCheckCommandHandler"
+		class="com.kcdata.abe.application.command.handler.ApplyPaymentCheckCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="applyPaymentService" ref="applyPaymentService" />
+	</bean>
+	<bean id="viewItineraryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.ViewItineraryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+	</bean>
+	<bean id="applyPaymentCommandHandler"
+		class="com.kcdata.abe.application.command.handler.ApplyPaymentCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="applyPaymentService" ref="applyPaymentService" />
+	</bean>
+	<bean id="retrieveMultiDestPackageCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveMultiDestPackageCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="multiDestinationPackageService" ref="multiDestinationPackageService" />
+	</bean>
+	<bean id="retrieveServiceDetailsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveServiceDetailsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="servicesService" ref="servicesService" />
+	</bean>
+	<bean id="validatePromoCommandHandler"
+		class="com.kcdata.abe.application.command.handler.ValidatePromoCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="promoService" ref="promoService" />
+	</bean>
+	<bean id="bookingCommentsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.BookingCommentsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="commentsService" ref="commentsService" />
+	</bean>
+	<bean id="updateEdocsInfoCommandHandler"
+		class="com.kcdata.abe.application.command.handler.UpdateEdocsInfoCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="edocsInfoService" ref="edocsInfoService" />
+	</bean>
+	<bean id="newsInfoCommandHandler"
+		class="com.kcdata.abe.application.command.handler.NewsInfoCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="newsInfoService" ref="newsInfoService" />
+	</bean>
+	<bean id="bookingLockCommandHandler"
+		class="com.kcdata.abe.application.command.handler.BookingLockCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="bookingLockService" ref="bookingLockService" />
+	</bean>
+	<bean id="paymentHistoryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.PaymentHistoryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="paymentHistoryService" ref="paymentHistoryService" />
+	</bean>
+	<bean id="emailCommandHandler"
+		class="com.kcdata.abe.application.command.handler.EmailCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="emailService" ref="emailService" />
+	</bean>
+	<bean id="retrieveAllPricesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveAllPricesCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="hotelsService" ref="hotelsService"/>
+		<property name="packagesService" ref="packagesService"/>
+	</bean>
+	<bean id="extendoptiondatecommandhandler"
+		class="com.kcdata.abe.application.command.handler.ExtendOptionDateCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+	</bean>
+	<bean id="retrieveCharterDatesCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveCharterDatesCommandHandler"
+		parent="abeCommandHandlerBase">
+	   <property name="flightsService" ref="flightsService" />			
+	</bean>
+	<bean id="retrieveSpecialsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveSpecialsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="specialsService" ref="specialsService"/>
+	</bean>
+	<bean id="retrieveAgenciesSearchCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveAgenciesSearchCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="agenciesSearchService" ref="agenciesSearchService"/>
+	</bean>
+	<bean id="cancelItineraryCommandHandler"
+		class="com.kcdata.abe.application.command.handler.CancelItineraryCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+		<property name="bookingSearchService" ref="bookingSearchService" />
+	</bean>
+		<bean id="edocsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.EdocsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="bookingSearchService" ref="bookingSearchService" />
+		<property name="edocsService" ref="edocsService" />
+	</bean>
+		
+	<bean id="retrieveHotelsVendorCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveHotelsVendorCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="hotelsService" ref="hotelsService" />
+	</bean>
+	
+	<bean id="expireBookingHandler"
+		class="com.kcdata.abe.application.command.handler.ExpireBookingCommmandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="expireBookingService" ref="expireBookingService" />
+	</bean>
+	
+	<!--New Bean Added Below for issue 3620543-->
+	
+	<bean id="retrieveCharterGatewayDestinationsCommandHandler"
+		class="com.kcdata.abe.application.command.handler.RetrieveCharterGatewayDestinationsCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="charterGatewayDestinationsService" ref="charterGatewayDestinationsService" />
+	</bean>
+	<bean id="priceChangeBookingCommandHandler"
+		class="com.kcdata.abe.application.command.handler.PriceChangeBookingCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="pricingThreadService" ref="pricingThreadService" />
+	</bean>
+	
+	<bean id="receiveHotelConfirmationCommandHandler"
+		class="com.kcdata.abe.application.command.handler.ReceiveHotelConfirmationCommandHandler"
+		parent="abeCommandHandlerBase">
+		<property name="itineraryService" ref="itineraryService" />
+	</bean>
+</beans>

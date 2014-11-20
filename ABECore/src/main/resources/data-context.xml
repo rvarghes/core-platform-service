@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<bean id="vehicleClassDao" class="com.kcdata.abe.data.dao.VehicleClassSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="gatewayDestinationsDao" class="com.kcdata.abe.data.dao.GatewayDestinationsSAPDaoImpl"
+		parent="abeSAPDaoBase" >
+		<property name="countryCodeDescription" ref="countryCodeDescription" />
+	</bean>	
+		
+	<bean id="amenitiesDao" class="com.kcdata.abe.data.dao.AmenitiesSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="userDao" class="com.kcdata.abe.data.dao.UserDBDaoImpl"
+		parent="abeDBDaoBase" />
+	<bean id="resortAreaDao" class="com.kcdata.abe.data.dao.ResortAreaSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="hotelChainDao" class="com.kcdata.abe.data.dao.HotelChainSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="advancedSkedSearchDao" class="com.kcdata.abe.data.dao.AdvancedSkedSearchSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="airlineInfoDao" class="com.kcdata.abe.data.dao.AirlineInfoSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="charterFlightsDao" class="com.kcdata.abe.data.dao.CharterFlightsCacheDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="cacheFlightsService" ref="cacheFlightsService" />
+		<property name="daysAhead" value="${charter.flights.days.ahead}" />
+		<property name="daysBehind" value="${charter.flights.days.behind}" />
+		<property name="airportsTimeZones" ref="airportsTimeZones" />
+		<property name="airlineNames" ref="airlineNames" />
+		<property name="flightsDao" ref="flightsDao" />
+		<property name="gatewayDestinationsDao" ref="gatewayDestinationsDao" />
+	</bean>
+	<bean id="cacheFlightsService"
+		class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<property name="serviceUrl" value="${charter.flights.service.cache.url}" />
+		<property name="serviceInterface"
+			value="com.kcdata.cache.application.service.CacheFlightsService" />
+		<property name="httpInvokerRequestExecutor" ref="httpInvokerRequestExecutor" />
+	</bean>
+
+	<bean id="httpInvokerRequestExecutor"
+		class="org.springframework.remoting.httpinvoker.CommonsHttpInvokerRequestExecutor">
+		<property name="httpClient">
+			<bean class="org.apache.commons.httpclient.HttpClient">
+				<property name="params">
+					<bean class="org.apache.commons.httpclient.params.HttpClientParams">
+						<property name="soTimeout"
+							value="${charter.flights.service.socket.connection.timeout}"></property>
+						<property name="connectionManagerTimeout"
+							value="${charter.flights.service.connection.timeout}"></property>
+					</bean>
+				</property>
+				<property name="httpConnectionManager" ref="httpConnectionManager" />
+			</bean>
+		</property>
+	</bean>
+	<bean id="specialsCacheDao" class="com.kcdata.abe.data.dao.SpecialsCacheDaoImpl">
+		<property name="specialsCacheService" ref="specialsCacheServiceExternalInterface" />
+	</bean>
+	<bean id="specialsCacheServiceExternalInterface"
+		 class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<property name="serviceUrl" value="${specials.service.cache.url}" />
+		<property name="serviceInterface"
+			value="com.applevac.sce.service.external.SpecialsCacheService" />
+		<property name="httpInvokerRequestExecutor" ref="specialsHTTPInvokerRequestExecutor" />
+	</bean>
+
+	<bean id="specialsHTTPInvokerRequestExecutor"
+		class="org.springframework.remoting.httpinvoker.CommonsHttpInvokerRequestExecutor">
+		<property name="httpClient">
+			<bean class="org.apache.commons.httpclient.HttpClient">
+				<property name="params">
+					<bean class="org.apache.commons.httpclient.params.HttpClientParams">
+						<property name="soTimeout"
+							value="${specials.service.socket.connection.timeout}"></property>
+						<property name="connectionManagerTimeout" value="${specials.service.connection.timeout}"></property>
+					</bean>
+				</property>
+				<property name="httpConnectionManager" ref="httpConnectionManager" />
+			</bean>
+		</property>
+	</bean>
+	<bean name="httpConnectionManager"
+		class="org.apache.commons.httpclient.MultiThreadedHttpConnectionManager" />
+
+	<bean id="flightInfoDao" class="com.kcdata.abe.data.dao.FlightInfoSAPDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="airportsTimeZones" ref="airportsTimeZones" />
+		<property name="airlineNames" ref="airlineNames" />
+	</bean>
+	<bean id="hotelsDao" class="com.kcdata.abe.data.dao.HotelsSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+		
+	<bean id="wesbHotelDao" class="com.kcdata.abe.data.dao.HotelsWESBDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="proxyService" ref="proxyService" />
+	</bean>
+	
+	<bean id="hbsiHotelsOnly" class="com.kcdata.abe.data.dao.HBSiHotelsOnlyDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="proxyService" ref="proxyService" />
+	</bean>  
+		
+
+	<bean id="hotelsCacheDao" class="com.kcdata.abe.data.dao.HotelsCacheDaoImpl">
+		<property name="specialsCacheDao" ref="specialsCacheDao" />
+	</bean>
+
+	<bean name="specialsSearchCriteria"
+		class="com.applevac.sce.service.external.SpecialsSearchCriteria" />
+
+	<bean id="alertsDao" class="com.kcdata.abe.data.dao.AlertsSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="flightsDao" class="com.kcdata.abe.data.dao.FlightsSAPDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="airportsTimeZones" ref="airportsTimeZones" />
+		<property name="airlineNames" ref="airlineNames" />
+	</bean>
+
+	<bean id="availabilityThreadDao" class="com.kcdata.abe.data.dao.threads.AvailabilityThreadDao"
+		scope="prototype" parent="abeDaoBase">
+		<property name="charterDao" ref="charterFlightsDao" />
+		<property name="flightsDao" ref="flightsDao" />
+		<property name="hotelDao" ref="hotelsDao" />
+		<property name="vehiclesDao" ref="vehiclesDao" />
+		<property name="hotelsCacheDao" ref="hotelsCacheDao" />
+	</bean>
+
+	<bean id="availabilityDaoFactory"
+		class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
+		<property name="serviceLocatorInterface"
+			value="com.kcdata.abe.data.factory.AvailabilityDaoFactory" />
+	</bean>
+
+	<bean id="fareRulesDao" class="com.kcdata.abe.data.dao.FareRulesSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<bean id="agencyInfoDao" class="com.kcdata.abe.data.dao.AgencyInfoSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+<bean id="expireBookingDao" class="com.kcdata.abe.data.dao.ExpireBookingDaoImpl"
+	parent="abeSAPDaoBase" />
+	<bean id="hotelRateRulesDao" class="com.kcdata.abe.data.dao.HotelRateRulesSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="fairTradeContractDao" class="com.kcdata.abe.data.dao.FairTradeContractDBDaoImpl"
+		parent="abeDBDaoBase" />
+
+	<bean id="itineraryPricingDao" class="com.kcdata.abe.data.dao.ItineraryPricingSAPDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="flightInfoDao" ref="flightInfoDao" />
+	</bean>
+	
+	<bean id="wesbItineraryPricingDao" class="com.kcdata.abe.data.dao.ItineraryPricingWESBDaoImpl" parent="abeSAPDaoBase" >
+	<property name="proxyService" ref="proxyService" />
+	</bean>
+
+	<bean id="itineraryDao" class="com.kcdata.abe.data.dao.ItinerarySAPDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="airportsTimeZones" ref="airportsTimeZones" />
+		<property name="airlineNames" ref="airlineNames" />
+	</bean>
+	<bean id="wesbMultiDestpackageDao" class="com.kcdata.abe.data.dao.WesbMultiDestinationPackageDaoImpl" 
+	parent="abeSAPDaoBase">
+	<property name="proxyService" ref="proxyService" />
+	</bean>
+	<bean id="wesbBookingDao" class="com.kcdata.abe.data.dao.WesbBookingDaoImpl"
+	parent="abeSAPDaoBase">
+	<property name="proxyService" ref="proxyService" />
+	</bean>
+
+	<bean id="emailInfoDao" class="com.kcdata.abe.data.dao.EmailInfoDaoImpl"
+		parent="abeDaoBase">
+		<property name="emailProcessor" ref="emailUtils" />
+		<property name="attachment" value="classpath:Credit_Card_Authorization.pdf" />
+	</bean>
+	<bean id="itineraryXMLDao" class="com.kcdata.abe.data.dao.ItineraryXMLDaoImpl"
+		parent="abeDaoBase">
+		<property name="xmlConverter" ref="xmlConverUtils" />
+		<property name="emailProcessor" ref="emailUtils" />
+		<property name="emailProps" ref="emailParams" />
+	</bean>
+	<bean id="bookingSearchDao" class="com.kcdata.abe.data.dao.BookingSearchSAPDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="airportsTimeZones" ref="airportsTimeZones" />
+		<property name="airlineNames" ref="airlineNames" />
+	</bean>
+	<bean id="breakdownChargesDao" class="com.kcdata.abe.data.dao.BreakdownChargesSAPDaoImpl"
+		parent="abeSAPDaoBase">
+	</bean>
+	<bean id="itinerarySearchDao" class="com.kcdata.abe.data.dao.ItinerarySearchSAPDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="airportsTimeZones" ref="airportsTimeZones" />
+		<property name="airlineNames" ref="airlineNames" />
+	</bean>
+
+	<bean id="vehiclesDao" class="com.kcdata.abe.data.dao.VehiclesSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<bean id="insuranceDao" class="com.kcdata.abe.data.dao.InsuranceSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+		
+	<bean id="insuranceWESBDao" class="com.kcdata.abe.data.dao.InsuranceWESBDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="proxyService" ref="proxyService" />
+		
+	</bean>		
+
+	<bean id="servicesDao" class="com.kcdata.abe.data.dao.ServicesSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+		
+	<bean id="wesbServicesDao" class="com.kcdata.abe.data.dao.ServicesWESBDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="proxyService" ref="proxyService" />
+	</bean>	
+
+	<bean id="opsAlertActionCodesDao" class="com.kcdata.abe.data.dao.OpsAlertActionCodesSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<bean id="createOpsAlertDao" class="com.kcdata.abe.data.dao.OpsAlertSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<bean id="applyPaymentDao" class="com.kcdata.abe.data.dao.ApplyPaymentSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<bean id="packagesDao" class="com.kcdata.abe.data.dao.PackagesSAPDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="airportsTimeZones" ref="airportsTimeZones" />
+		<property name="airlineNames" ref="airlineNames" />
+	</bean>
+	
+	<bean id="wesbPackagesDao" class="com.kcdata.abe.data.dao.PackagesWESBDaoImpl" parent="abeSAPDaoBase">
+		<property name="airportsTimeZones" ref="airportsTimeZones" />
+		<property name="airlineNames" ref="airlineNames" />
+		<property name="proxyService" ref="proxyService" />
+	</bean>
+
+	<bean id="promoDao" class="com.kcdata.abe.data.dao.PromoSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<bean id="commentsDao" class="com.kcdata.abe.data.dao.CommentsSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<bean id="edocsInfoDao" class="com.kcdata.abe.data.dao.EdocsInfoSAPDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="commentsDao" ref="commentsDao" />
+	</bean>
+	
+	<bean id="newsInfoDao" class="com.kcdata.abe.data.dao.NewsInfoSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<bean id="bookingLockDao" class="com.kcdata.abe.data.dao.BookingLockSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<bean id="paymentHistoryDao" class="com.kcdata.abe.data.dao.PaymentHistorySAPDaoImpl"
+		parent="abeSAPDaoBase" />
+
+	<util:properties id="airportsTimeZones"
+		location="classpath:config/AirportsTimezones.properties" />
+	<util:properties id="airlineNames"
+		location="classpath:config/AirlineNames.properties" />
+		
+	<util:properties id="countryCodeDescription"
+		location="classpath:config/countryCode.properties" />	
+	<util:properties id="emailParams" location="classpath:config/email.properties" />
+	<!--  Load XSLT files from the classpath -->
+	<bean id="xmlConverUtils" class="com.kcdata.abe.data.util.XMLConvertUtils">
+		<property name="agentQuoteXSLT" value="classpath:quote_for_agent.xslt" />
+		<property name="agentQuoteXSLTPRINT" value="classpath:quote_for_agent_print.xslt" />
+		<property name="agentBookingXSLT" value="classpath:booking_for_agent.xslt" />
+		<property name="agentBookingXSLTPRINT" value="classpath:booking_for_agent_print.xslt" />
+		<property name="customerQuoteXSLT" value="classpath:quote_for_customer.xslt" />
+		<property name="customerQuoteXSLTPRINT" value="classpath:quote_for_customer_print.xslt" />
+		<property name="customerBookingXSLT" value="classpath:booking_for_customer.xslt" />
+		<property name="customerBookingXSLTPRINT" value="classpath:booking_for_customer_print.xslt" />
+		<property name="breakdownChargesXSLT" value="classpath:pricebreakdown.xslt" />
+		<property name="hotelAllotmentVenderXSLT" value="classpath:hotel_allotment_vendor_request.xslt" />
+	</bean>
+
+	<bean id="emailUtils" class="com.kcdata.abe.data.util.EmailUtils">
+		<property name="emailProps" ref="emailParams" />
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+	<bean id="itineraryComparisonEmailDao" class="com.kcdata.abe.data.dao.ItineraryComparisonEmailDaoImpl"
+		parent="abeDaoBase">
+		<property name="emailProcessor" ref="emailUtils" />
+	</bean>
+	<bean id="agenciesSearchDao" class="com.kcdata.abe.data.dao.AgenciesSearchSAPDaoImpl"
+		parent="abeSAPDaoBase" />
+	<!-- Mail service -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="172.22.0.230" />
+		<!--
+			<property name="port" value="25"/> <property name="username"
+			value="yourusername"/> <property name="password"
+			value="yourpassword"/>
+		-->
+	    <property name="javaMailProperties">
+	        <props>
+	            <!-- Use SMTP-AUTH to authenticate to SMTP server -->
+	            <prop key="mail.smtp.auth">false</prop>
+	            <!-- Use TLS to encrypt communication with SMTP server -->
+	            <prop key="mail.smtp.starttls.enable">false</prop>
+	        </props>
+	    </property>
+	</bean>
+	<bean id="tokenProcessNo" class="com.kcdata.abe.data.util.ViewTokenUtilImpl">
+		<property name="hash">
+			<ref bean="hash" />
+	</property>
+	</bean>
+	<bean id="hash" class="java.security.MessageDigest"
+		factory-method="getInstance">
+		<constructor-arg value="MD5" />
+	</bean>
+	<bean id="hbsiHotelDao" class="com.kcdata.abe.data.dao.HBSiHotelDaoImpl"
+		parent="abeSAPDaoBase" >
+		<property name="hotelDataSource" ref="abeHotelDataSource"/>
+	</bean>
+	
+	<bean id="itineraryWESBDao" class="com.kcdata.abe.data.dao.ItineraryWESBDaoImpl"
+		parent="abeSAPDaoBase">
+		<property name="proxyService" ref="proxyService" />
+	</bean>
+	<!--New Dao added Below for issue 3620543 -->
+	<bean id="charterGatewayDestinationsDao" class="com.kcdata.abe.data.dao.CharterGatewayDestinationsSAPDaoImpl"
+		parent="abeSAPDaoBase">
+	</bean>
+	
+	<bean id="pricingDaoFactory"
+		class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
+		<property name="serviceLocatorInterface"
+			value="com.kcdata.abe.data.factory.PricingDaoFactory" />
+	</bean>
+	
+	<bean id="pricingThreadDao" class="com.kcdata.abe.data.dao.threads.PricingThreadDao"
+		scope="prototype" parent="abeDaoBase">
+		<property name="itineraryPricingDao" ref="itineraryPricingDao" />
+	</bean>
+</beans>
