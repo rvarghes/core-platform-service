@@ -14,7 +14,7 @@
 		<repository>
 			<id>rvarghes-mvn-repo</id>
 			<!-- url>https://raw.github.com/rvarghes/mvn-repo/master</url-->
-			<url>https://github.com/rvarghes/core-platform-service</url>
+			<url>https://raw.githubusercontent.com/rvarghes/mvn-repo/master</url>
 			<snapshots>
 				<enabled>false</enabled>
 				<updatePolicy>always</updatePolicy>
